@@ -18,6 +18,8 @@ Built 2026-10-07 for Kenny Edgar. Goal: grow toward decompiling games. Sources l
 | [13-candidate-projects.md](13-candidate-projects.md) | Ranked shortlist of projects to work on |
 | [14-paper-mario.md](14-paper-mario.md) | Paper Mario decomp/port status |
 | [15-developer-profiling.md](15-developer-profiling.md) | Studio/developer profiling and code reuse |
-
-## License
-Text licensed under [CC BY 4.0](LICENSE). Contains notes and links only; no game code, ROMs or assets.
+- [16-golden-sun.md](16-golden-sun.md)
+- [17-zelda.md](17-zelda.md)
+- [18-dbz-gba.md](18-dbz-gba.md)
+- [19-harry-potter-gbc.md](19-harry-potter-gbc.md)
+- [20-developer-approaches.md](20-developer-approaches.md)

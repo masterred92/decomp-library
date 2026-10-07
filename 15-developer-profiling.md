@@ -37,3 +37,7 @@ Idea: games from the same studio/team share engines, libraries, compilers, flags
 - [ ] Existing community tools/docs (modding wikis, ttyd-tools-style repos)
 - [ ] Which versions/regions exist and which has the most symbols (pick the decomp target accordingly)
 - [ ] Legal: own copy, asset-free repo (see 08)
+
+## See also
+- [20-developer-approaches.md](20-developer-approaches.md): studio-by-studio comparison (compilers, engines, compression, decompiler impact)
+- 16-golden-sun, 17-zelda, 18-dbz-gba, 19-harry-potter-gbc

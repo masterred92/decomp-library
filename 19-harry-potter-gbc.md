@@ -1,0 +1,8 @@
+# Harry Potter GBC (Griptonite): developer-style study note
+
+Not a decomp target. This note is for the developer-profiling angle (see 15, 20).
+
+* **Philosopher's/Sorcerer's Stone (GBC, 2001)**: Griptonite Games for EA. Lead programmer Michael Dorgan, with Doug Schilling, Joshua Meeds, Steve Ettinger and Steve Vallee. Designed and written by Michael Humes. Under Amaze Entertainment creative direction ([Wikipedia](https://en.wikipedia.org/wiki/Harry_Potter_and_the_Philosopher%27s_Stone_(Game_Boy_Color_video_game))). It's a turn-based RPG, a deliberate design choice that suited the GBC better than the action style of the console versions. Wikipedia also notes the GBC version had the longest development cycle of the group.
+* **Chamber of Secrets (GBC)**: described as the last GBC game released in North America ([Terin Stock](https://terinstock.com/post/2022/05/HPSS-Disassembly-Progress-Report-May-2022/)).
+* **Style evidence**: the only public study is [terinjokes/HPSS-Disassembly](https://github.com/terinjokes/HPSS-Disassembly) (RGBDS, WIP), whose stated goal is "to document the techniques used to develop Game Boy games during the final years of the hardware lifecycle". GBC games of this era were typically hand-written SM83 assembly, so style shows up in bank layout, calling conventions and table formats, not compiler output. The header was part code, part data in the disassembly and gets regenerated with `rgbfix`.
+* **Takeaway for profiling**: Griptonite was a Western contract studio running several licensed handheld titles in parallel. Look for shared engine routines across its other GBC and GBA licensed games (unverified; worth checking).
