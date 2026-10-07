@@ -78,8 +78,8 @@ equals what the compiler that rebuilt the full GS1 ROM produced. Our own toy C s
 `push {r5, ...}` (r4 never saved), `adds rX, rY, #0` register copies, and `x * 10` as shift-adds.
 One gotcha: `build.sh` stops with `host compiler missing: g++` if there's no `g++`, even though gcc296
 compiles no C++. `CXX=clang++ ./build.sh gcc296` gets past it. One command does it all:
-`gba-decomp-toolkit/scripts/install_camelot_gcc.sh` (steps in its `docs/compilers.md`). Still needs a
-ROM: building goldensun-decomp itself and `make compare`.
+`gba-decomp-toolkit/scripts/install_camelot_gcc.sh` (steps in its `docs/compilers.md`). Full ROM build
+verified too; see the gotchas at the end of section 3.
 
 ## 3. Build setup and verification (goldensun-decomp)
 1. Put your own USA ROM at `baserom.gba`; `sha1sum` must be `5c4695205413df7db52b9a184815a07783999971`.
@@ -91,6 +91,20 @@ ROM: building goldensun-decomp itself and `make compare`.
 5. Compare one function: `bash ./run-diff.sh -mo FUNCTION --no-pager --format plain`.
    For overlay functions, select the map: `GOLDENSUN_DIFF_MAP=overlays/rom_XXXXXX/overlay.map`.
 Ubuntu/WSL2 is the supported host. ROMs, extracted assets and build output must never be committed.
+
+**Build-setup gotchas we hit (no-root Linux box, 2026-10-07):** the full `make -j1 clean && make -j1 compare`
+passed (ROM `OK`, all 96 overlays identical) in about 45 s of build time.
+* **No sudo needed.** Instead of the distro's `binutils-arm-none-eabi` (the project's metadata records
+  Ubuntu's binutils 2.38), we put Arm GNU Toolchain 13.3 (binutils 2.42) on `PATH` and it still matched.
+  binutils 2.42 prints `rdhi, rdlo and rm must all be different` for one hand-written asm file. It's
+  not fatal, and the output still matches.
+* **Reuse a compiler you already built:** `camelot-gcc/install.sh <checkout> gcc296` just copies the
+  binaries plus `build-manifest.json` into `<checkout>/tools/gcc296/`, so it takes seconds with no rebuild.
+  `./build.sh agbcc` (old_agbcc) needs only a host C compiler and took ~10 s.
+* **Keep the ROM outside the checkout:** a symlink named `baserom.gba` works. `*.gba` and `tools/gcc296/`,
+  `tools/agbcc/` are already git-ignored, so `git status` stays clean after a build.
+* `tools/progress.py` (run after a successful compare) gives function counts; weighting by
+  `original_function_sizes.json` gives roughly the byte-based figure that decomp.dev shows.
 
 ## 4. Repository layout
 | Path | Contents |
