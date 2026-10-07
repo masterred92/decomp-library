@@ -26,3 +26,4 @@ Built 2026-10-07 for Kenny Edgar. Goal: grow toward decompiling games. Sources l
 - [21-learning-paths.md](21-learning-paths.md) — study plan: CS, C, assembly, compilers, OS, Python/C++/Rust/Go/JS, LLMs
 - [22-language-history.md](22-language-history.md) — history of programming languages, why C won, human lingua francas, LLMs as translators
 - [23-weird-web.md](23-weird-web.md) — weird open-source websites: URL-bar/favicon games, Doom in a PDF and in CSS, browser emulators, WASM ports of decompiled games, CSS art, tiny demos
+- [24-linux-and-torvalds.md](24-linux-and-torvalds.md) — Linux history (1991 post, GPL, Just for Fun), how Git began, kernel development process, torvalds repos, GNU toolchain/ELF/syscalls for decomp, Linux and OS learning repos
