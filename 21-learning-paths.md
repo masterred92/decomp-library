@@ -69,7 +69,56 @@ Tutor-style plan: learn *with* me, one stage at a time. Each stage says **why it
 ## Stage 9 — Security practice (legal)
 - [pwncollege/dojo](https://github.com/pwncollege/dojo) (pwn.college), [ctf-wiki/ctf-wiki](https://github.com/ctf-wiki/ctf-wiki), [apsdehal/awesome-ctf](https://github.com/apsdehal/awesome-ctf), [OWASP/CheatSheetSeries](https://github.com/OWASP/CheatSheetSeries). See note 23.
 
+## Stage 10 — Game design & writing
+Not decomp directly, but decomp is reading other people's *design decisions* in code. These teach what those decisions were for.
+
+**Maps and reading lists**
+- [ellisonleao/magictools](https://github.com/ellisonleao/magictools) — the big index of game-dev tools and resources.
+- [Kavex/GameDev-Resources](https://github.com/Kavex/GameDev-Resources) and [Calinou/awesome-gamedev](https://github.com/Calinou/awesome-gamedev) — broad resource lists (the second sticks to free software).
+- [dawdle-deer/awesome-learn-gamedev](https://github.com/dawdle-deer/awesome-learn-gamedev) — learning-focused: courses, books, talks.
+- [Roobyx/awesome-game-design](https://github.com/Roobyx/awesome-game-design) — design theory, books, GDC talks and examples.
+- [utilForever/game-developer-roadmap](https://github.com/utilForever/game-developer-roadmap) — a visual roadmap of game-programming skills.
+- [gheja/game-design-documents](https://github.com/gheja/game-design-documents) — real design documents from well-known games.
+
+**Programming patterns and game AI**
+- [munificent/game-programming-patterns](https://github.com/munificent/game-programming-patterns) — the book *Game Programming Patterns* (free at gameprogrammingpatterns.com). Game loop, update method, component, state: the shapes you will see again in decompiled code.
+- [BehaviorTree/BehaviorTree.CPP](https://github.com/BehaviorTree/BehaviorTree.CPP) — behaviour trees in C++.
+- [crashkonijn/GOAP](https://github.com/crashkonijn/GOAP) — goal-oriented action planning (the F.E.A.R. approach) for Unity.
+- [wangchen/Programming-Game-AI-by-Example-src](https://github.com/wangchen/Programming-Game-AI-by-Example-src) — source for Buckland's classic book: state machines, steering, pathfinding.
+
+**Narrative and interactive fiction tools**
+- [inkle/ink](https://github.com/inkle/ink), [inkle/inky](https://github.com/inkle/inky) (editor), [y-lohse/inkjs](https://github.com/y-lohse/inkjs) (web runtime), [inkle/ink-library](https://github.com/inkle/ink-library) (samples) and [inkle/the-intercept](https://github.com/inkle/the-intercept) (a small complete game). ink is the scripting language behind *80 Days* and *Heaven's Vault*. Start here for branching writing.
+- [YarnSpinnerTool/YarnSpinner](https://github.com/YarnSpinnerTool/YarnSpinner) — dialogue language used in *Night in the Woods* and *A Short Hike*.
+- [klembot/twinejs](https://github.com/klembot/twinejs) and [tmedwards/sugarcube-2](https://github.com/tmedwards/sugarcube-2) — Twine, the fastest way to prototype a branching story in a browser.
+- [dfabulich/choicescript](https://github.com/dfabulich/choicescript) — Choice of Games' stat-driven multiple-choice format.
+- [ganelson/inform](https://github.com/ganelson/inform) — Inform 7, parser IF written in near-English.
+- [nathanhoad/godot_dialogue_manager](https://github.com/nathanhoad/godot_dialogue_manager) — nonlinear dialogue for Godot.
+- [galaxykate/tracery](https://github.com/galaxykate/tracery) — tiny story-grammar generator; great first procedural-text toy.
+- [JoshuaGrams/tiny-qbn](https://github.com/JoshuaGrams/tiny-qbn) — storylets (quality-based narrative, the *Fallen London* model) for Twine.
+- [tajmone/awesome-interactive-fiction](https://github.com/tajmone/awesome-interactive-fiction) — index of IF systems and tools.
+
+**Social simulation and emergent story (research)**
+- [ensemble-engine/ensemble](https://github.com/ensemble-engine/ensemble) — rules-based social AI (successor to the *Prom Week* engine).
+- [james-owen-ryan/talktown](https://github.com/james-owen-ryan/talktown) — simulated town with generations of characters, memory and gossip.
+- [mkremins/winnow](https://github.com/mkremins/winnow) — "story sifting": finding interesting stories inside a simulation log.
+
+**Procedural generation**
+- [mxgmn/WaveFunctionCollapse](https://github.com/mxgmn/WaveFunctionCollapse) — generates tilemaps from one example; used in *Caves of Qud* and *Townscaper*.
+- [mxgmn/MarkovJunior](https://github.com/mxgmn/MarkovJunior) — the same author's rewrite-rule language, 150+ examples.
+- [amitp/mapgen2](https://github.com/amitp/mapgen2) — Red Blob Games' polygon island map generator (read the article on redblobgames.com alongside it).
+
+**Open-source games to study**
+- [OpenTTD/OpenTTD](https://github.com/OpenTTD/OpenTTD) — simulation economy, decades of design iteration. It began as a reverse-engineered Transport Tycoon, so it's relevant to decomp too.
+- [CleverRaven/Cataclysm-DDA](https://github.com/CleverRaven/Cataclysm-DDA) — huge data-driven (JSON) survival sim; emergent stories come from systems.
+- [crawl/crawl](https://github.com/crawl/crawl), [NetHack/NetHack](https://github.com/NetHack/NetHack), [tmewett/BrogueCE](https://github.com/tmewett/BrogueCE) — three roguelike philosophies: depth, legacy and minimalism.
+- [wesnoth/wesnoth](https://github.com/wesnoth/wesnoth) — turn-based strategy with a large written campaign library and a scripting language (WML).
+- [DFHack/dfhack](https://github.com/DFHack/dfhack) — Dwarf Fortress itself is closed source, but DFHack's reverse-engineered structures show how its simulation is laid out. That's decomp meeting design.
+
+**Why:** knowing *why* a system exists (a state machine for enemy AI, a script VM for dialogue) makes it much faster to recognise in assembly. It's also the base for designing our own games.
+**Project:** write a 10-minute branching story in ink (Inky), commit the `.ink` file, then add one storylet-style "quality" check.
+
 ## Top 10 starter repos (do these first, in order)
 1. ossu/computer-science 2. jlevy/the-art-of-command-line 3. TheAlgorithms/C 4. jamiebuilds/the-super-tiny-compiler 5. rui314/chibicc 6. mytechnotalent/Reverse-Engineering 7. Asabeneh/30-Days-Of-Python 8. karpathy/nn-zero-to-hero 9. rasbt/LLMs-from-scratch 10. mlabonne/llm-course
 
 All links checked on 2026-10-07 (each repo was starred through the GitHub API, which fails for repos that don't exist).
+Stage 10 links were checked the same day with `gh api repos/OWNER/REPO`.
