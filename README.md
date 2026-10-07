@@ -23,3 +23,5 @@ Built 2026-10-07 for Kenny Edgar. Goal: grow toward decompiling games. Sources l
 - [18-dbz-gba.md](18-dbz-gba.md)
 - [19-harry-potter-gbc.md](19-harry-potter-gbc.md)
 - [20-developer-approaches.md](20-developer-approaches.md)
+- [21-learning-paths.md](21-learning-paths.md) — study plan: CS, C, assembly, compilers, OS, Python/C++/Rust/Go/JS, LLMs
+- [22-language-history.md](22-language-history.md) — history of programming languages, why C won, human lingua francas, LLMs as translators
