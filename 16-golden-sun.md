@@ -72,7 +72,14 @@ cd camelot-gcc
 ```
 Our toolkit can use the same install: `gbadt init ... --compiler gcc-2.96-patched` with
 `GCC296_DIR=/path/to/tools/gcc296` (see `gba-decomp-toolkit/docs/compilers.md`).
-**[unverified]** we haven't built camelot-gcc on the box yet; it's the natural next step and needs no ROM.
+**Built and checked on our box (2026-10-07)**, camelot-gcc `1197a54`, user space under `~/tools/gcc296`,
+no sudo, under a minute on 8 cores. camelot-gcc's ROM-free smoke corpus passed 3/3: its exact assembly
+equals what the compiler that rebuilt the full GS1 ROM produced. Our own toy C showed the fingerprints:
+`push {r5, ...}` (r4 never saved), `adds rX, rY, #0` register copies, and `x * 10` as shift-adds.
+One gotcha: `build.sh` stops with `host compiler missing: g++` if there's no `g++`, even though gcc296
+compiles no C++. `CXX=clang++ ./build.sh gcc296` gets past it. One command does it all:
+`gba-decomp-toolkit/scripts/install_camelot_gcc.sh` (steps in its `docs/compilers.md`). Still needs a
+ROM: building goldensun-decomp itself and `make compare`.
 
 ## 3. Build setup and verification (goldensun-decomp)
 1. Put your own USA ROM at `baserom.gba`; `sha1sum` must be `5c4695205413df7db52b9a184815a07783999971`.
@@ -170,7 +177,7 @@ takedown risk exists. Keep Kenny's GS work in a private fork until we decide oth
 **`HasMove`** (`asm/rpg/move/HasMove.s`, ROM `0x08078BC0`, about 20 instructions). It's small, the
 name says what it does (does this character know move X?), and there's already a parked candidate
 `src/non_matching/rpg/move/HasMove.c` scoring **81.8%** (48 bytes). Steps:
-1. Build camelot-gcc + goldensun-decomp, check `make compare` passes, then run `create_diff_baseline.py`.
+1. Build camelot-gcc (done on the box, see section 2) + goldensun-decomp, check `make compare` passes, then run `create_diff_baseline.py`.
 2. `python3 tools/compare_candidate.py src/non_matching/rpg/move/HasMove.c`, read the diff.
 3. Usual suspects for the last ~20%: `u8` vs `int` loop counters, `s16` vs `u16` move IDs, loop shape
    (`for` vs `while`), and the struct field's access width.

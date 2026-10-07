@@ -88,7 +88,7 @@ Typical differences you'd see in the assembly (general, **[unverified]** for thi
 **Alternatives if we can't get ADS 1.2:**
 1. **Recomp route** (mstan's gbarecomp): no compiler match needed.
 2. **Non-matching ("functional") decomp:** write C that behaves the same, checked by running it rather than by bytes. That's easier but loses the automatic "MATCH" check that makes AI decomp so fast.
-3. **Hybrid:** keep functions as assembly (the buusfury approach) and only rewrite in C the ones we can test. Our toolkit's compiler-per-project setting should allow `compiler = none / asm-only`.
+3. **Hybrid:** keep functions as assembly (the buusfury approach) and only rewrite in C the ones we can test. Our toolkit now has this: `gbadt init ... --compiler ads12` makes an asm-only project (rebuilds the exact ROM, `match` disabled) or, with `--mode notes-only`, just a function table to document (added 2026-10-07).
 4. **Documentation route:** like Arefu, name functions, structs and formats in Ghidra and publish *notes*, no code. Lowest legal risk, and good for learning.
 
 ## 7. Supersonic Warriors (Arc System Works + Cavia)
@@ -106,4 +106,4 @@ Typical differences you'd see in the assembly (general, **[unverified]** for thi
 | Supersonic Warriors | Check the compiler first; if it's agbcc, it's the best *matching* DBZ target | Open field, maybe a friendlier compiler |
 
 ## Recommended next step
-Write an `armcc`-free lesson: build a tiny C function with **gcc** for ARM/Thumb (`arm-none-eabi-gcc`, which we can legally install), then hand-write what armcc-style output tends to look like (literal pool placement, call veneers), and compare. Then add a `compiler = ads12 | agbcc | none` setting to gba-decomp-toolkit, so ADS projects run in "asm-only / document" mode. No ROM needed for either.
+Write an `armcc`-free lesson: build a tiny C function with **gcc** for ARM/Thumb (`arm-none-eabi-gcc`, which we can legally install), then hand-write what armcc-style output tends to look like (literal pool placement, call veneers), and compare. The toolkit half is done: the `ads12` profile (2026-10-07) runs ADS projects in asm-only or notes-only mode. The lesson half needs no ROM.
