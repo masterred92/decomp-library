@@ -1,0 +1,7 @@
+# Platform Notes
+- **MIPS / N64 (and PS1/PS2/PSP)**: N64 games often used SGI IDO 5.3/7.1 (run via the IDO static recomp https://github.com/decompals/ido-static-recomp) or GCC (KMC). Watch for delay slots. Tooling: splat, m2c, asm-differ, permuter. PS2 Emotion Engine is MIPS R5900 (128-bit regs, EE-GCC/MWCC/SN).
+- **PowerPC / GameCube / Wii (and Xbox 360/PS3)**: Metrowerks CodeWarrior (MWCC) on GC/Wii, with exact version matching critical. Tooling: decomp-toolkit, objdiff, decomp.me. Formats: DOL/REL. 360 is PPC (Xenon), so XenonRecomp.
+- **ARM / GBA / DS / 3DS / Switch**: GBA ARM7TDMI with Thumb, agbcc (pret). DS ARM9/ARM7 with MWCC for ARM. Switch is AArch64 with Clang/LLVM, NSO executables; Ghidra/IDA plus loaders. Thumb/ARM mode switching matters.
+- **x86 / PC**: MSVC builds; PDBs (if leaked or shipped) are gold. Tools: IDA, Ghidra, Binary Ninja. Matching decomp of MSVC games exists (e.g. objdiff supports PE/COFF). Expect anti-tamper/DRM, which you shouldn't circumvent (see 08).
+- **Unity**: Mono builds go to ILSpy/dnSpyEx (near-source C#). IL2CPP builds go to Il2CppDumper (or Cpp2IL https://github.com/SamboyCoding/Cpp2IL) then Ghidra/IDA. Assets: AssetRipper https://github.com/AssetRipper/AssetRipper
+- **Unreal**: native C++. The reflection system (UObject/UClass names) leaks lots of symbol info; use SDK dumpers and UE source (via Epic's GitHub access) for struct layouts. Assets in .pak/IoStore: FModel https://fmodel.app/
