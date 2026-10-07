@@ -66,20 +66,78 @@ Leftover names like `code_08049CD4.c` and `gUnk_02000010` show that even at "100
 
 ## Four Swords (GBA): what's known
 - Four Swords isn't a separate cartridge. It's the multiplayer half of **"A Link to the Past & Four Swords"** (2002). Flagship/Capcom made Four Swords and then Minish Cap (2004), which is why ZeldaRET says TMC "will aid" a Four Swords decomp.
-- **Existing work:** [camthesaxman/zeldaalttp](https://github.com/camthesaxman/zeldaalttp) is a *disassembly* of the combined cart (mostly assembly, ~5% C, 5 contributors, last push Oct 2022). [gbadisasm](https://github.com/jiangzhengwenjz/gbadisasm) ships a config `alttpafs.cfg` for the US cart. Text: Four Swords strings are plain ASCII, while the ALttP half's text is encoded ([Zelda Legends](http://www.zeldalegends.net/index.php?p=128)). *Unverified:* the zeldaalttp build state and which compiler it assumes.
+- **Existing work:** [camthesaxman/zeldaalttp](https://github.com/camthesaxman/zeldaalttp) is a *disassembly* of the combined cart (mostly assembly, ~5% C, 5 contributors, last push Oct 2022). [gbadisasm](https://github.com/jiangzhengwenjz/gbadisasm) ships a config `alttpafs.cfg` for the US cart. Text: Four Swords strings are plain ASCII, while the ALttP half's text is encoded ([Zelda Legends](http://www.zeldalegends.net/index.php?p=128)). Its build target and compiler are written up just below (read 2026-10-07).
 - So a "start fresh" Four Swords project should really **start from zeldaalttp's disassembly** rather than from zero, and should coordinate with ZeldaRET's Discord to avoid duplicating work.
+
+### zeldaalttp: ROM target and compiler (read 2026-10-07)
+Read from a shallow clone of [camthesaxman/zeldaalttp](https://github.com/camthesaxman/zeldaalttp)
+at HEAD `d3802f5` (merge of PR #6, 2022-10-15). **There is no README**, so everything here comes
+from the `Makefile`, `checksum.*`, `ldscript.txt` and `asm/rom_header.inc`. No ROM was used, so we
+haven't run `make compare` ourselves.
+
+**The ROM it rebuilds**
+| Field | Value |
+|---|---|
+| Output | `zeldaalttp.gba`, checked by `make compare` (`sha1sum -c checksum.sha1`) |
+| SHA1 | `a272055abbbf6c26b0cd54c87395d01699589161` (MD5 `3287ca66e5cc285a9fe3a922051e84c6`) |
+| Header | title `GBAZELDA`, game code `AZLE`, maker `01`, version byte 0, header checksum `0x8A` |
+| Edition | `AZLE` = the North American "A Link to the Past & Four Swords", first revision (version 0). Region read from the game code's last letter `E`; we haven't checked it against a dump database |
+| Size | linked at `0x08000000`, then `objcopy --gap-fill 0xFF --pad-to 0x8800000`, so an 8 MiB image with `0xFF` filling the unused space |
+| Needs | your own dump saved as `baserom.gba` in the repo root: the data files pull bytes straight from it (about 4,700 `.INCBIN "baserom.gba"` lines) |
+
+**The compiler: agbcc** (the same family as Minish Cap)
+* `CC1 := tools/agbcc/bin/agbcc`, flags `-mthumb-interwork -Wimplicit -Wparentheses -O2`. C goes
+  through `arm-none-eabi-cpp` (`-Itools/agbcc/include -iquote include -nostdinc -undef`), then
+  agbcc, then `.ALIGN 2, 0` is appended to each `.s` before assembling. This is the classic pret pipeline.
+* **Per-file flag:** `-fprologue-bugfix` for `rom_0800D4F0`, `main`, `math`,
+  `file_select`, `rom2` and `main_2`. There's no `src/main_2.c`, so that last line is a leftover. The
+  flag is a pret agbcc option: in `thumb.c` it makes the compiler re-check whether a function really
+  contains a far jump before deciding to save `lr`, which changes the prologue bytes. In other words,
+  some of the game's files were built with a slightly different compiler revision. Same lesson as tmc:
+  expect per-file compiler settings.
+* `CC1_OLD := old_agbcc` is defined but no rule uses it yet (it would come in for the m4a sound library).
+* Links agbcc's `libgcc.a` and `libc.a`. `tools/agbcc` is gitignored: you build pret/agbcc yourself
+  (our `gba-decomp-toolkit/scripts/install_agbcc.sh <repo>` does that).
+* Binutils come from **`$DEVKITARM/bin/arm-none-eabi-*`**, so `DEVKITARM` must be set. Pointing it at
+  our ARM GNU toolchain folder should work, since it has the same `bin/` layout (**[untested]**).
+* `make` also builds `tools/gbagfx` (PNG to GBA graphics converter) automatically.
+* Small gotcha: the Makefile uses `$(SCANINC)` for header dependencies but never defines it, so
+  dependency scanning silently does nothing. After editing a header, `make tidy` first.
+
+**How it's split**
+* One `ldscript.txt` lists every object in ROM order: `asm/crt0`, big chunks `asm/rom1`…`rom6`,
+  and C files placed between them (`src/main.c`, `math.c`, `rom2.c`, `file_select.c`, `game_select.c`,
+  `hud.c`, `interface.c`, `rom3a.c`, `rom_0800D4F0.c`).
+* `src/lttp/` holds the ALttP sprite (enemy/NPC) code that's been matched: `sprite.c`, `sprite2.c`,
+  `sprite_witch.c`, `sprite_faerie.c`, `sprite_bottle_vendor.c`, `sprite_heart_refill.c`,
+  `sprite_pickup.c`, `sprite_unused.c`; `asm/lttp/sprite_bee.s` is still asm.
+* `data/4swords_text.s` is the Four Swords text; RAM variables are named in `sym_ewram.txt` and `sym_iwram.txt`.
+* **Progress, roughly:** about 6,700 lines of C against about 663,000 lines of asm and data, with
+  about 7,430 function-start macros in `asm/`. That fits the "~5% C" figure above. Function macros come in
+  two spellings (`THUMB_FUNC_START` ×7,249 and `thumb_func_start` ×180), a sign of different
+  contributors' tools.
+* Helpers: `calcrom.pl` (progress from the `.map` file), `asmdiff.sh <addr> <len>` (objdump diff of
+  `baserom.gba` vs the build), `rename_sym.sh`.
+
+**What it means for us**
+* Our compiler guess for Four Swords was "agbcc `-O2`, like tmc". zeldaalttp's matched files are built
+  exactly that way, which is good evidence, though we haven't run their `make compare`. Step 5 of the plan
+  below (match 3 functions to confirm) is still worth doing.
+* To use it with our toolkit: `gbadt signatures` can find tmc functions in this cart, then
+  `import-symbols` names them. Because zeldaalttp isn't shiftable yet (raw `.INCBIN` + fixed
+  addresses), keep any renames in our private scaffold or send them upstream as `rename_sym.sh` runs.
 
 ### How tmc can speed it up
 - **Function names via signatures.** Functions shared between the games (m4a sound, agbcc's libgcc, memcpy/decompress helpers, maybe entity/collision core) will have the same or near-same bytes. Build tmc on *your own* ROM, hash each function's bytes (masking out branch/pointer targets), and look for those hashes in your own ALttP&FS ROM. Every hit gives you a name and a matching C body to try.
-- **Our tool:** `gbadt import-symbols` (new, see below) applies a symbol list onto a scaffold. The signature step that produces that list is the next feature to write.
+- **Our tool:** `gbadt signatures build/match` (added 2026-10-07) fingerprints functions with addresses masked and writes a symbol list; `gbadt import-symbols` applies it to a scaffold. Tested on our own demo ROM built in two layouts (5/5 functions found).
 - **Headers:** borrow `entity.h`-style struct layouts as a *first guess*, then verify each offset against the Four Swords assembly. Structs from two years earlier will differ.
 - **Compiler:** try agbcc `-O2` with tmc's flags first. *Unverified* until one Four Swords function matches.
 - Legal: keep everything private on your PC. Contribute upstream through ZeldaRET (which has a no-leaked-source rule) instead of publishing a Nintendo-title decomp ourselves.
 
 ### Concrete plan (small steps, one commit each)
-1. Read zeldaalttp's README/Makefile and write down how it's split and which ROM SHA1 it targets. (Library note)
+1. ~~Read zeldaalttp's README/Makefile and write down how it's split and which ROM SHA1 it targets.~~ Done 2026-10-07 (above; there is no README).
 2. Privately: dump your own cart, run `gbadt init`, and check that `make compare` is OK.
-3. Toolkit feature: `gbadt signatures` hashes functions with masked relocations and outputs a symbol list. Test it on our demo ROM.
+3. ~~Toolkit feature: `gbadt signatures` hashes functions with masked relocations and outputs a symbol list. Test it on our demo ROM.~~ Done 2026-10-07.
 4. Privately: build tmc from your own TMC ROM, export its `nm`, run signatures across both, then `import-symbols`. Record the hit count in the library (numbers only, no code).
 5. Pick 3 tiny matched-by-signature functions and confirm they compile byte-identical with agbcc. That confirms the compiler.
 6. Then ask in ZeldaRET's Discord whether a Four Swords effort exists and join or seed it.
@@ -93,3 +151,5 @@ Leftover names like `code_08049CD4.c` and `gUnk_02000010` show that even at "100
 
 ## Toolkit feature built for this note
 `gba-decomp-toolkit` now has `python3 -m gbadt import-symbols <project> <symfile> [--offset N]`. It reads `nm`, linker-script or plain address lists, renames matching `sub_XXXXXXXX` functions (files, labels, config), reports the rest, and keeps the build byte-identical. It's tested only on our own homebrew demo ROM.
+
+Update 2026-10-07: `gbadt signatures` now produces those symbol lists by masked-byte fingerprint (see `docs/signatures.md` in the toolkit).
