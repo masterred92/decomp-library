@@ -43,7 +43,7 @@
 ### Which compiler? (GBA)
 | Compiler | Used by | Notes |
 |---|---|---|
-| **agbcc** (Nintendo's GCC 2.95-era build, recreated by pret) | Most Nintendo-published and many Japanese titles | [pret/agbcc](https://github.com/pret/agbcc) |
+| **agbcc** (an old GCC 2.9x-based compiler, rebuilt by pret) | Most Nintendo-published and many Japanese titles | [pret/agbcc](https://github.com/pret/agbcc) |
 | **Patched gcc 2.96** | Camelot (Golden Sun 1/2) | [16](16-golden-sun.md) |
 | **ARM SDT / ADS 1.2 (armcc)** | Many Western studios (e.g. Webfoot's DBZ) | GCC can't match it; see [18](18-dbz-gba.md) |
 
