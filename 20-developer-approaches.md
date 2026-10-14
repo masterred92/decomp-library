@@ -21,3 +21,10 @@ Cross-links: 15-developer-profiling.md, 16–19. **[U] = uncertain or unverified
 4. **Custom compression** usually blocks data and shiftability work before it blocks code.
 5. **Debug leftovers** (flag names, strings, debug menus on TCRF) are cheap symbol sources.
 6. **Custom languages** (GOAL) mean writing your own decompiler, which is the biggest lift.
+
+## Update 2026-10-14: Camelot's style, now from real matches
+After 19 matched Golden Sun functions ([25](25-golden-sun-matching-lessons.md)), the Camelot row has evidence behind it. They wrote plain,
+step-by-step C: small named locals, pointers walked forward, struct fields instead of raw offsets, exact signed/unsigned types,
+expressions in the order they thought of them, and some old implicit-int functions (declared `int`, no `return`). Because gcc 2.96
+doesn't reorder much, that phrasing shows up in the output. Use the same approach for any studio: match a dozen easy functions, then write
+the habits down ([15](15-developer-profiling.md)).
