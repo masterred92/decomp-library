@@ -25,8 +25,12 @@ Written 2026-10-14 after our first two matching sessions on
 | [#36](https://github.com/Coaltergeist/goldensun-decomp/pull/36) | 7 battle functions (fades, flash, midpoints, task waits) | battle |
 | [#37](https://github.com/Coaltergeist/goldensun-decomp/pull/37) | `Func_8078550`, `Func_807882c`, `Func_8079c8c` | inventory / equipment |
 
-That's 19 functions across 6 PRs, and all of them were open and awaiting review at the time of writing. Upstream had
-1,768 single-function `INCLUDE_ASM` files left, which drops to 1,745 once these land.
+| fork branches | `GiveDjinni` (rpg-batch2), `Func_8012350` (field-batch2), `Func_80a9b94`, `Func_80a9cbc`, `Func_80a9cf8`, `Func_80a9d84`, `Func_80ad69c` (party-menu-batch2), `Func_80b2720`, `Func_80b26cc` (shop-batch1) | waiting until the open PRs are reviewed |
+
+That's **28 functions**: 19 across the 6 PRs, plus 9 on 4 fork branches that aren't PRs yet. The full list is in the fork's
+[MATCHED_FUNCTIONS.md](https://github.com/masterred92/goldensun-decomp/blob/main/MATCHED_FUNCTIONS.md). Each branch passes
+the full compare, and all 10 merge cleanly together and still match. Upstream had 1,768 single-function `INCLUDE_ASM` files left,
+which drops to **1,740** if everything lands. (An earlier version of this chapter said 1,745 for the six PRs; the right figure was 1,749.)
 
 ---
 
@@ -93,6 +97,11 @@ This is related to 2.3. Advancing a pointer (`p++` / `p += n`) and indexing (`p[
 increment in different places in the loop or expression. When the original bumps a pointer, you
 need to bump one too.
 
+**This depends on context.** Rule 2.10 below points the *other* way. In `Func_80c1084` (#36), the code steps through *fields of
+one struct* (`p += 0x64e / 2;` then reads `*p`), and moving the pointer forward matched. In the party-menu loops over a
+**table of pointers**, `table[i]` matched and pointer-walking didn't. So the question to ask is whether you're
+moving through one block of data or looking up entries in a table.
+
 ### 2.5 Load into named locals first
 Camelot's programmers used lots of small, named temporaries. Copying values into locals before using them
 (the four coordinates in a midpoint calculation, an actor's first sprite layer, `x >>= 20; z >>= 20;`
@@ -125,6 +134,50 @@ gcc 2.96 picks that register based on whether **r0 holds a return value**:
 end with `pop {r1}` but never compute a return value. They matched only when declared `int` with
 **no `return` statement**, which looks like old **implicit-int** C (functions declared without a type
 default to `int`). It's an old habit, and the last instruction gives it away.
+
+### 2.10 Index style for loops over pointer tables
+Four party-menu functions (fork branch `party-menu-batch2`) loop over a table of cursor pointers. They only matched in index style:
+```c
+for (i = 0; i <= 31; i++) {
+    struct MenuCursor *cursor = cursors[i];
+    if (cursor != 0) { ... }
+}
+```
+Walking a pointer (`*cursors++`) moves the increment and changes the registers. See the note under 2.4 for when each style wins.
+
+### 2.11 Don't save what the original re-reads
+`GiveDjinni` was a near-miss (one extra `mov`) until we **stopped** saving `u->numDjinn[element]` in a local and read the
+field again each time it's used:
+```c
+if (u->numDjinn[element] > 9)
+    return -1;
+...
+u->numDjinn[element]++;
+```
+The permuter found this one. It goes against 2.5, but it fits the same principle: write what the original
+*did*. If it loaded the field twice, you load it twice.
+
+### 2.12 Keep a tested-and-passed value in a named local
+In `Func_80b26cc` (fork branch `shop-batch1`), the item is checked and then passed on, so it needs its own variable,
+assigned inside the test:
+```c
+for (i = 0; i < 8 && (item = gShopItemLists[shop][24 + i]) != 0; i++)
+    _Func_8078ad0(item, 1);
+```
+Reading the table a second time for the call doesn't match.
+
+### 2.13 Loop shape: counted `for` with an early `break`; length check first
+* `Func_8012350`: a wait-loop with a maximum of 300 tries matched as a counted `for` with an early `break`. The `while` version
+  that means the same thing didn't:
+  ```c
+  for (i = 0; i < 300; i++) {
+      if (state[1] <= 0xff && state[2] <= 0xff)
+          break;
+      WaitFrames(1);
+  }
+  ```
+* `Func_80b2720`: in a combined loop condition, put the **length check first**:
+  `for (n = 0; n < 24 && gShopItemLists[shop][n] != 0; n++)`. Swapping the order of the `&&` swaps the branch order (like 2.8).
 
 ---
 
@@ -204,5 +257,5 @@ Camelot wrote **plain, step-by-step C**. They loaded values into small named loc
 forward and described data with structs instead of raw offsets. Their types were exact (signed where the game
 needs negatives), they wrote expressions in the order they thought of them, and sometimes they used old
 implicit-int habits (functions that "return int" but don't). gcc 2.96 doesn't rearrange much, so the
-code's phrasing shows through in the output. That's good news for the remaining ~1,745 functions: once you
+code's phrasing shows through in the output. That's good news for the remaining ~1,740 functions: once you
 know the habits, most functions should come out the same way.
