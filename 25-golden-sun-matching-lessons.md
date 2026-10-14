@@ -25,7 +25,7 @@ Written 2026-10-14 after our first two matching sessions on
 | [#36](https://github.com/Coaltergeist/goldensun-decomp/pull/36) | 7 battle functions (fades, flash, midpoints, task waits) | battle |
 | [#37](https://github.com/Coaltergeist/goldensun-decomp/pull/37) | `Func_8078550`, `Func_807882c`, `Func_8079c8c` | inventory / equipment |
 
-That's 23 functions across 6 PRs, and all of them were open and awaiting review at the time of writing. Upstream had
+That's 19 functions across 6 PRs, and all of them were open and awaiting review at the time of writing. Upstream had
 1,768 single-function `INCLUDE_ASM` files left, which drops to 1,745 once these land.
 
 ---
