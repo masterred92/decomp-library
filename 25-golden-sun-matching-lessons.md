@@ -24,7 +24,6 @@ Written 2026-10-14 after our first two matching sessions on
 | [#35](https://github.com/Coaltergeist/goldensun-decomp/pull/35) | `Func_80a17c4`, `Func_80a3d6c`, `Func_80b0694` | menu cursor, items, shop |
 | [#36](https://github.com/Coaltergeist/goldensun-decomp/pull/36) | 7 battle functions (fades, flash, midpoints, task waits) | battle |
 | [#37](https://github.com/Coaltergeist/goldensun-decomp/pull/37) | `Func_8078550`, `Func_807882c`, `Func_8079c8c` | inventory / equipment |
-
 | fork branches | `GiveDjinni` (rpg-batch2), `Func_8012350` (field-batch2), `Func_80a9b94`, `Func_80a9cbc`, `Func_80a9cf8`, `Func_80a9d84`, `Func_80ad69c` (party-menu-batch2), `Func_80b2720`, `Func_80b26cc` (shop-batch1) | waiting until the open PRs are reviewed |
 
 That's **28 functions**: 19 across the 6 PRs, plus 9 on 4 fork branches that aren't PRs yet. The full list is in the fork's
