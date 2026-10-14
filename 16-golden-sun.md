@@ -197,3 +197,6 @@ name says what it does (does this character know move X?), and there's already a
    (`for` vs `while`), and the struct field's access width.
 4. Once EXACT, move it into `src/rpg/move.c` in place of the `INCLUDE_ASM`, finalize, open a PR.
 Backup: `Func_80167ac` in `ui/ui` (67.1%, 44 bytes).
+
+## 2026-10-14 note
+- Upstream activity check failed (GitHub timeout). No verified news of Golden Sun in any recomp list yet (not in the gbarecomp list as of 2026-10-14).

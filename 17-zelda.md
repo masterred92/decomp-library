@@ -153,3 +153,6 @@ haven't run `make compare` ourselves.
 `gba-decomp-toolkit` now has `python3 -m gbadt import-symbols <project> <symfile> [--offset N]`. It reads `nm`, linker-script or plain address lists, renames matching `sub_XXXXXXXX` functions (files, labels, config), reports the rest, and keeps the build byte-identical. It's tested only on our own homebrew demo ROM.
 
 Update 2026-10-07: `gbadt signatures` now produces those symbol lists by masked-byte fingerprint (see `docs/signatures.md` in the toolkit).
+
+## 2026-10 note
+- Minish Cap has a gbarecomp static recomp: https://github.com/mstan/MinishCapRecomp (it is a recomp, not a decomp).

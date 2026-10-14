@@ -7,3 +7,7 @@ Static recomp **translates machine code to C/C++ automatically**, without hand-w
 - Related: PS2Recomp efforts, and the SM64 PC port from the decomp.
 
 Key point: decomp → readable source → real ports/mods; recomp → fast native ports, plus mod hooks.
+
+## 2026-10 update (GBA)
+- mstan/gbarecomp: a general ARM/Thumb to C++ static recompiler with per-game repos (Minish Cap, Emerald, FR/LG, R/S, Mega Man Zero, etc.). FR/LG uses an interpreter plus JIT fallback that it caches to disk. https://github.com/mstan/gbarecomp
+- FFTA got two recomps, 2026-10-09..12 (gba-recomp in Rust; gbarecomp). Secondary source: gamingworld.uk.
