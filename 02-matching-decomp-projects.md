@@ -37,7 +37,7 @@ Static recompilation ([03](03-static-recompilation.md)) is a fourth thing. Its o
 | pokeemerald / pokefirered / pokeruby | agbcc | The reference GBA methodology (Makefile, `INCLUDE_ASM`, `make compare`) | [pokeemerald](https://github.com/pret/pokeemerald), [pokefirered](https://github.com/pret/pokefirered), [pokeruby](https://github.com/pret/pokeruby) |
 | zeldaret/tmc (Minish Cap) | agbcc | A finished non-Pokémon GBA decomp; see [17](17-zelda.md) | [tmc](https://github.com/zeldaret/tmc) |
 | fireemblem8u | agbcc | Region builds that differ by compiler flags | [fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u) |
-| Sonic Advance 3 (SAT-R) | agbcc-family | A non-Nintendo-published GBA target | [sa3](https://github.com/SAT-R/sa3) |
+| Sonic Advance 3 (SAT-R) | agbcc [unverified] | A non-Nintendo-published GBA target | [sa3](https://github.com/SAT-R/sa3) |
 | goldensun-decomp | patched gcc 2.96 | Our project; see [16](16-golden-sun.md) and [25](25-golden-sun-matching-lessons.md) | [goldensun-decomp](https://github.com/Coaltergeist/goldensun-decomp) |
 
 ### Milestone: Melee at 100%
