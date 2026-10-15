@@ -160,7 +160,7 @@ takes most of the time, and sometimes the right call is to park it. Automate the
 * **Branch hygiene**: one `kenny/…` branch per PR, based on upstream main, and stacked only when a PR really depends on another.
 * **Mistakes we made and caught:**
   * *Staging too broadly* (`git add src`) can sweep scratch files into a commit. Stage specific files and read `git diff --staged` before committing.
-  * *Stray branches*: some batches were pushed without the `kenny/` prefix and duplicated other branches. They're listed, and deleting them is waiting on Kenny's approval.
+  * *Stray branches*: some batches were pushed without the `kenny/` prefix and duplicated other branches. We confirmed each was identical to a kept branch or already inside an open PR before deleting it, so nothing was lost.
   * *Count errors*: we once published "1,745 remaining" when it should have been 1,749. Now the count comes from the diffs
     (`-INCLUDE_ASM` lines), not mental arithmetic, and the correction is noted openly in [25](25-golden-sun-matching-lessons.md).
 
