@@ -24,12 +24,18 @@ Written 2026-10-14 after our first two matching sessions on
 | [#35](https://github.com/Coaltergeist/goldensun-decomp/pull/35) | `Func_80a17c4`, `Func_80a3d6c`, `Func_80b0694` | menu cursor, items, shop |
 | [#36](https://github.com/Coaltergeist/goldensun-decomp/pull/36) | 7 battle functions (fades, flash, midpoints, task waits) | battle |
 | [#37](https://github.com/Coaltergeist/goldensun-decomp/pull/37) | `Func_8078550`, `Func_807882c`, `Func_8079c8c` | inventory / equipment |
-| fork branches | `GiveDjinni` (rpg-batch2), `Func_8012350` (field-batch2), `Func_80a9b94`, `Func_80a9cbc`, `Func_80a9cf8`, `Func_80a9d84`, `Func_80ad69c` (party-menu-batch2), `Func_80b2720`, `Func_80b26cc` (shop-batch1) | waiting until the open PRs are reviewed |
+| [#38](https://github.com/Coaltergeist/goldensun-decomp/pull/38)–[#43](https://github.com/Coaltergeist/goldensun-decomp/pull/43) | 19 functions: the former fork branches (djinn, field, party menu, shop, sprite, ui) | various |
+| [#44](https://github.com/Coaltergeist/goldensun-decomp/pull/44)–[#49](https://github.com/Coaltergeist/goldensun-decomp/pull/49) | 18 functions | various |
+| [#50](https://github.com/Coaltergeist/goldensun-decomp/pull/50)–[#52](https://github.com/Coaltergeist/goldensun-decomp/pull/52) | 19 functions (ui structs, maps, battle); found by clustering sibling functions | various |
+| [#53](https://github.com/Coaltergeist/goldensun-decomp/pull/53), [#54](https://github.com/Coaltergeist/goldensun-decomp/pull/54) | 28 functions (22 map overlays, 6 ui/text) | maps, ui |
 
-That's **28 functions**: 19 across the 6 PRs, plus 9 on 4 fork branches that aren't PRs yet. The full list is in the fork's
-[MATCHED_FUNCTIONS.md](https://github.com/masterred92/goldensun-decomp/blob/main/MATCHED_FUNCTIONS.md). Each branch passes
-the full compare, and all 10 merge cleanly together and still match. Upstream had 1,768 single-function `INCLUDE_ASM` files left,
-which drops to **1,740** if everything lands. (An earlier version of this chapter said 1,745 for the six PRs; the right figure was 1,749.)
+That's **103 functions across PRs #32–#54**, all still open and awaiting review as of 2026-10-15. The full list is in the fork's
+[MATCHED_FUNCTIONS.md](https://github.com/masterred92/goldensun-decomp/blob/main/MATCHED_FUNCTIONS.md). Every PR branch passes the
+full compare, and a combined merge of all of them (merge-test6) still matches the ROM and all 96 overlays. Upstream had 1,768
+single-function `INCLUDE_ASM` files left, which drops to about **1,665** if everything lands. (Earlier counts in this chapter: 1,745 was
+wrong for the first six PRs, and the right figure was 1,749.)
+
+The general programming lessons from all this are in [26](26-what-decomp-teaches-about-programming.md).
 
 ---
 
@@ -177,6 +183,23 @@ Reading the table a second time for the call doesn't match.
   ```
 * `Func_80b2720`: in a combined loop condition, put the **length check first**:
   `for (n = 0; n < 24 && gShopItemLists[shop][n] != 0; n++)`. Swapping the order of the `&&` swaps the branch order (like 2.8).
+
+### 2.14 Patterns from the 103-function run (ranked by how many matches each unlocked)
+* **`z - 1` as an expression, not `z--`.** Writing `f(x, z - 1, ..., z - 1)` instead of decrementing `z` first
+  fixed an r5/r6 swap across a whole family of map overlays (about 9 functions, [#53](https://github.com/Coaltergeist/goldensun-decomp/pull/53)).
+  Decrementing changes the variable, so the compiler has to keep the new value somewhere. An expression doesn't change anything.
+* **A `const` alias for the overlay division helper.** Map overlays divide through `_divsi3_RAM`, a copy of the
+  division routine in RAM. Declaring it as a pure function let the compiler schedule it the way the original did (6 functions):
+  ```c
+  extern int _divsi3_RAM__c(int, int) __asm__("_divsi3_RAM") __attribute__((const));
+  a[0x44 / 4] = vx - _divsi3_RAM__c(vx, 18);
+  ```
+* **Recompute from the base.** With struct views that contain array or struct members, write every access
+  as `base->member[i]` from the same base, not as chained offsets from a previous pointer (about 5).
+* **An unprototyped `extern void f();`** when the same file defines `f` later with parameters. Old C allowed calls without
+  a full prototype, and that changes how arguments are set up (1, `Func_809a65c`).
+* Smaller wins: a 2-bit bitfield instead of a hand-written mask; `x >>= 3; y >>= 3;` as separate statements before a call;
+  `param -= K;` in place; masking into a named local before OR-ing.
 
 ---
 
