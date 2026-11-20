@@ -1,5 +1,5 @@
 # Decompilation Reference Library
-Built 2026-10-07. Goal: grow toward decompiling games. Sources linked in each file; verify before relying on version-specific details.
+Built 2026-10-07. Goal: grow toward decompiling games. Sources linked in each file; verify before relying on version-specific details. How the later lessons changed over time is in [34-learning-timeline.md](34-learning-timeline.md); individual rules, including superseded ones, are in [INDEX.md](INDEX.md).
 
 | File | Topic |
 |---|---|
@@ -30,3 +30,11 @@ Built 2026-10-07. Goal: grow toward decompiling games. Sources linked in each fi
 - [25-golden-sun-matching-lessons.md](25-golden-sun-matching-lessons.md) — lessons from matching 103 Golden Sun functions (PRs #32–#54): gcc 2.96 quirks, write-order and struct patterns, the Thumb return-type tell, misses, struct layouts, PR workflow, Camelot's coding style
 - [26-what-decomp-teaches-about-programming.md](26-what-decomp-teaches-about-programming.md) — general programming lessons from matching 103 Golden Sun functions: compilers, data layout, types, debugging, verification, automation, collaboration
 - [27-lessons-from-addon-releases.md](27-lessons-from-addon-releases.md) — November 2026 roundup: shared-lib versioning, client restrictions, tests you can prove, CI on archived repos, release and store hygiene, public-repo hygiene, team review
+- [28-tests-mocks-and-lua-pitfalls.md](28-tests-mocks-and-lua-pitfalls.md) — Lua and/or traps, truthful mocks, live-state renders, quantity-scaling checks, proving a test by reverting it
+- [29-honest-data.md](29-honest-data.md) — controls must change outputs, cite the real publisher, totals match their parts, byte-compare data rebuilds, do not invent missing numbers
+- [30-hidden-data-and-addon-apis.md](30-hidden-data-and-addon-apis.md) — combat hiding is the default, runtime detection, feature-test missing APIs, combat-safe keyboard UI
+- [31-ui-contrast-and-layout.md](31-ui-contrast-and-layout.md) — contrast over bright worlds and glows, icons at 64px, move a colliding status, freeze height only after sizing for combat
+- [32-auction-house-pitfalls.md](32-auction-house-pitfalls.md) — live deposits, 2/8/24 hour listings, separate neutral-house prices, incomplete scans
+- [33-release-ci-and-collaboration.md](33-release-ci-and-collaboration.md) — re-read live store pages, pin credential-handling actions, one writer per checkout
+- [34-learning-timeline.md](34-learning-timeline.md) — October–November 2026 chronology, from the decomp library through addon and data lessons
+- [INDEX.md](INDEX.md) — lesson index, including superseded rules and the dates they changed
