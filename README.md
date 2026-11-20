@@ -1,5 +1,5 @@
 # Decompilation Reference Library
-Built 2026-10-07 for Kenny Edgar. Goal: grow toward decompiling games. Sources linked in each file; verify before relying on version-specific details.
+Built 2026-10-07. Goal: grow toward decompiling games. Sources linked in each file; verify before relying on version-specific details.
 
 | File | Topic |
 |---|---|
