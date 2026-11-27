@@ -5,9 +5,47 @@ replaced. Superseded entries stay here, with the date they changed, so
 the history is visible. The narrative is in
 [34](34-learning-timeline.md). Chapters
 [01](01-history-and-tools.md)–[26](26-what-decomp-teaches-about-programming.md)
+and [35](35-cross-project-decompiler-lessons.md)
 are the decomp reference and are indexed in the [README](README.md).
 
 ## Current rules (late November 2026)
+
+### Matching decomp and project setup
+- Name edition and region differences as features (for example
+  `#if FEATURE`, `WHEN`, `BY_LANGUAGE`); do not fork a source file
+  per language. ([35](35-cross-project-decompiler-lessons.md) §1.1)
+- Build tools should know a file format, never the game, and should
+  be tested on invented fixtures that did not come from a ROM. Commit
+  no ROM, blob, or extracted asset. ([35](35-cross-project-decompiler-lessons.md) §1.2,
+  [08](08-legal-ethics.md))
+- An empty function or object diff is not done until the full image
+  hash matches for every edition you claim. A 100% objdiff translation
+  unit still has to be flagged `Matching` and survive the link.
+  Add a linking or shift test early, and keep intermediate objects for
+  objdiff. ([35](35-cross-project-decompiler-lessons.md) §1.3)
+- Do not replace a fake match with a worse kind: `signature` and
+  `volatile` are the worst, `dead` the mildest. If honest C will not
+  match, leave the function in assembly. ([35](35-cross-project-decompiler-lessons.md) §2.1,
+  [25](25-golden-sun-matching-lessons.md) §3)
+- Work only from the project you are contributing to, your own copy
+  of the official image, and public documentation. Do not copy from a
+  sibling clean-room tree or from leaked kits. Follow that project's
+  AI policy. ([35](35-cross-project-decompiler-lessons.md) §3,
+  [08](08-legal-ethics.md))
+- A Thumb `pop {r0}` epilogue means `void`; `pop {r1}` means the
+  function returns a value. Put a pooled constant into the destination
+  register first (`x = 0x1ff; x &= field;`). Decrementing loop
+  counters should be `int`, not a narrow type. ([35](35-cross-project-decompiler-lessons.md) §2.2,
+  [25](25-golden-sun-matching-lessons.md) §2.9)
+- A permuter or model score is not proof the C is correct; reread it
+  for meaning and rewrite scripted wrappers as honest C before a PR.
+  ([35](35-cross-project-decompiler-lessons.md) §2.3,
+  [04](04-decomp-tooling.md), [05](05-ai-llm-decompilation.md))
+- `asm("" : "+r"(x))` hides `x` from the optimiser; it is not a
+  scheduling no-op. A leftover `volatile` on a pointer may come off
+  while a plain temporary still has to stay. Fake matches that set
+  register pressure with explicit clobbers are poor clean-fix
+  candidates. ([35](35-cross-project-decompiler-lessons.md) §2.4)
 
 ### Shared libraries, release and review
 - If a shared library's content changes, bump MINOR and add a new hash

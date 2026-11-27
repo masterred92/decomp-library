@@ -37,4 +37,5 @@ Built 2026-10-07. Goal: grow toward decompiling games. Sources linked in each fi
 - [32-auction-house-pitfalls.md](32-auction-house-pitfalls.md) — live deposits, 2/8/24 hour listings, separate neutral-house prices, incomplete scans
 - [33-release-ci-and-collaboration.md](33-release-ci-and-collaboration.md) — re-read live store pages, pin credential-handling actions, one writer per checkout
 - [34-learning-timeline.md](34-learning-timeline.md) — October–November 2026 chronology, from the decomp library through addon and data lessons
+- [35-cross-project-decompiler-lessons.md](35-cross-project-decompiler-lessons.md) — cross-project matching architecture, FAKEMATCH ladder, categorized ASM-to-C patterns, a playbook for future decomp repos, and a checklist for our own decompiler
 - [INDEX.md](INDEX.md) — lesson index, including superseded rules and the dates they changed

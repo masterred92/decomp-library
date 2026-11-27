@@ -105,3 +105,24 @@ minutes; pin credential-handling actions to a SHA
 ([33](33-release-ci-and-collaboration.md)). A public-repo hygiene pass
 the same day is summarised in [27 §9](27-lessons-from-addon-releases.md).
 This library gained chapter 27, then chapters 28–34.
+
+## 2026-11-27 — cross-project decompiler lessons
+
+After a week of Golden Sun matching (including
+[Coaltergeist/goldensun-decomp#102](https://github.com/Coaltergeist/goldensun-decomp/pull/102))
+and a read-only look at
+[PascalPixel/alchemy](https://github.com/PascalPixel/alchemy)
+(both Golden Sun games, all twelve editions, already 100% matching),
+this library gained
+[35](35-cross-project-decompiler-lessons.md). That chapter records
+how 100% projects structure multi-edition builds and asset tools,
+Alchemy's `FAKEMATCH` severity ladder, categorized assembly-to-C
+patterns for humans and ML-assisted matchers, a playbook of project
+practices from Alchemy, zeldaret, pret, doldecomp and objdiff, and a
+checklist of what our own decompiler should check, emit and verify.
+A local Golden Sun 2 fake-match pass the same day improved 1 of 10
+targets (a leftover `volatile` came off a pointer; the temporary
+itself had to stay). The other nine were the hard residue: empty
+`asm` barriers that hide values from `-Os`, signature and clobber
+tricks that pin registers, and temporaries coupled to other
+phrasing. Those results are in [35 §2.4](35-cross-project-decompiler-lessons.md).
